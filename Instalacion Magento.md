@@ -434,7 +434,7 @@ Para permitir que el servidor web escriba archivos y directorios en el sistema d
 
 Esta sección explica cómo crear un nuevo propietario del sistema de archivos Magento y poner ese usuario en el grupo del servidor web. Puede utilizar una cuenta de usuario existente si lo desea; recomendamos que el usuario tenga una contraseña segura por razones de seguridad.
 
-1.	cree el propietario del sistema de archivos Magento y proporcione al usuario una contraseña segura. Para crear un usuario ingrese el siguiente comando como usuario con privilegios root:
+1.	Crea el propietario del sistema de archivos Magento y proporcione al usuario una contraseña segura. Para crear un usuario ingrese el siguiente comando como usuario con privilegios root:
 ```
 sudo adduser magento
 ```
@@ -487,4 +487,74 @@ sudo chown -R magento:www-data /var/www/html/
 ```
 
 ## 2. Obtén el metapaquete
+Usamos Composer para administrar los componentes de Magento y sus dependencias
+Descargar e instalar composer:
+EL comando descargarán Composer de su página de mantenimiento y lo instalarán en el directorio _/usr/local/bin_ , este es un directorio global local para ejecutables de aplicaciones.
+```
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+```
+**Para obtener el metapaquete de Magento:**
+ 1.	Inicie sesión en su servidor Magento o cambie al propietario del sistema de archivos Magento.
+```
+su magento
+```
+ 2.	Cambie al directorio docroot del servidor web o un directorio que haya configurado como un docroot de host virtual.
+```
+cd /var/www/html/
+```
+ 3.	Cree un nuevo proyecto de Composer utilizando el metapaquete de Magento Open Source o Magento Commerce.
+```
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition magento
+```
+Durante la configuración, se le pedirá un nombre de usuario y una contraseña. Para que quede claro, Nombre de usuario = Clave pública y Contraseña = Clave privada obtenidas de la cuenta de Magento Marketplace
+```
+Public Key: 44e09e45efe15d4c90b70c0370886dbd
+Private Key: cd9275d55beb9895558edc091a0178c8
+```
+**Establecer permisos de archivo**
+
+Debe establecer permisos de lectura y escritura para el grupo de servidores web antes de instalar el software Magento. Esto es necesario para que la línea de comandos pueda escribir archivos en el sistema de archivos de Magento.
+
+```
+cd /var/www/html/magento
+
+find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
+
+find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+
+chown -R :www-data . 
+
+chmod u+x bin/magento
+```
+
+Para ejecutar comandos de Magento desde cualquier directorio, agregue _<magento_root>/bin_ a su sistema PATH.
+```
+export PATH=$PATH:/var/www/html/magento/bin
+```
+**Instale Magento desde la línea de comandos .**
+
+En este ejemplo se supone que el directorio de instalación de Magento es nombrado magento, el db-host está en la misma máquina (localhost), y que el db-name, db-usery son magento: 
+```
+./magento setup:install \
+--base-url=http://magento.ticss.ddns.net/magento \
+--db-host=localhost \
+--db-name=magento \
+--db-user=magento \
+--db-password=Acceso2021! \
+--admin-firstname=admin \
+--admin-lastname=admin \
+--admin-email=admin@admin.com \
+--admin-user=admin \
+--admin-password=admin123 \
+--language=en_US \
+--currency=USD \
+--timezone=America/Mexico_City \
+--use-rewrites=1
+```
+
+## 3. Verificar la instalación
+Vaya al escaparate en un navegador web. Ingrésela en la dirección o barra de ubicación de su navegador.
+```
+http://magento.ticss.ddns.net/magento
+```
 
