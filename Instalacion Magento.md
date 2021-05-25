@@ -1,7 +1,7 @@
 # Instalación de Magento
 Guía de cómo instalar, configurar y acceder al Magento CMS en una computadora que ejecuta Ubuntu Linux.
--Ubuntu 20.04.2, 2 CPU, 4GB RAM, 16GB HDD
--Magento Versión 2.4.0
+- Ubuntu 20.04.2, 2 CPU, 4GB RAM, 16GB HDD
+- Magento Versión 2.4.0
 
 Flujo de instalación
  
