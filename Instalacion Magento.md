@@ -232,6 +232,7 @@ Si tiene más de uno opcache.ini, modifíquelos todos.
 Para configurar las opciones de PHP:
 1.	Abra un php.ini en un editor de texto.
 2.	Busque la zona horaria de su servidor. Busque la siguiente configuración y descomente si es necesario:
+
 _date.timezone = America/Mexico_City_
 
 3.	Cambie el valor de _memory_limit_ por uno los valores recomendados
@@ -251,6 +252,7 @@ realpath_cache_ttl = 7200
 ```
 
 5.	Guarde sus cambios y salga del editor de texto.
+
 **configurar las opciones de OPcache**
 
 1.	Abra su archivo de configuración de OPcache en un editor de texto:
@@ -297,7 +299,7 @@ wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add
 
 **Instalación desde el repositorio APT**
 
-Es posible que deba instalar el paquete apt-transport-https en Debian antes de continuar:
+Es posible que deba instalar el paquete apt-transport-https antes de continuar:
 ```
 sudo apt-get install apt-transport-https
 ```
@@ -307,7 +309,7 @@ Guarde la definición del repositorio en _/etc/apt/sources.list.d/elastic-7.x.li
 echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
 ```
 
-You can install the Elasticsearch Debian package with:
+Puedes instalar el paquete de Elasticsearch con:
 ```
 sudo apt-get update && sudo apt-get install elasticsearch
 ```
@@ -482,7 +484,7 @@ Cuando instalamos Apache, creó automáticamente un directorio web para almacena
 Actualice la propiedad de la carpeta y el grupo para que coincida con nuestro nuevo usuario web:
 ```
 sudo chown -R magento:www-data /var/www/html/
-	```
+```
 
 ## 2. Obtén el metapaquete
 
