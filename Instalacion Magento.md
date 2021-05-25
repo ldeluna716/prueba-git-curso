@@ -153,3 +153,340 @@ mysql -u magento -p
 
 Si aparece el monitor MySQL, ha creado la base de datos correctamente. Si aparece un error, repita los comandos anteriores.
 
+### 1.3 PHP
+
+1.	Instale PHP 7.4 junto con los módulos necesarios
+```
+sudo apt install php7.4 libapache2-mod-php7.4 php-common php7.4-cli php7.4-common php7.4-json php7.4-opcache php7.4-readline php7.4-bcmath php7.4-curl php7.4-xml php7.4-gd php7.4-intl php7.4-mbstring php7.4-mysql php7.4-soap php7.4-xsl php7.4-zip
+```
+
+2.	Verificar extensiones instaladas
+Magento requiere la instalación de un conjunto de extensiones:
+
+-	ext-bcmath
+-	ext-ctype
+-	ext-curl
+-	ext-dom
+-	ext-gd
+-	ext-hash
+-	ext-iconv
+-	ext-intl
+-	ext-mbstring
+-	ext-openssl
+-	ext-pdo_mysql
+-	ext-simplexml
+-	ext-jabón
+-	ext-xsl
+-	ext-zip
+-	ext-sockets
+
+Para verificar las extensiones instaladas enumere los módulos instalados y verifique.
+```
+php -m
+```
+
+**Compruebe la configuración de PHP**
+
+1.	busque los archivos de configuración de PHP
+Encuentra el archivo _php.ini_ de configuración
+Para encontrar la configuración del servidor web, ejecute un archivo _phpinfo.php_ en su navegador web y busque _Loaded Configuration File_.
+
+**_phpinfo.php_** muestra una gran cantidad de información sobre PHP y sus extensiones.
+
+Cree el archivo _php.info.php_ dentro del docroot del servidor web.
+```
+sudo vim /var/www/html/phpinfo.php
+```
+
+Agregue el siguiente código:
+```
+<?php
+// Show all information, defaults to INFO_ALL
+phpinfo();
+```
+Para ver los resultados, ingrese la siguiente URL en el campo de dirección o ubicación de su navegador:
+```
+http://<web server host or IP>/phpinfo.php
+	```
+
+	También se puede ubicar la configuración por la línea de comandos de PHP, ingrese:
+```
+php --ini | grep "Loaded Configuration File"
+	```
+
+Mostrará la ruta de php.ini:
+```
+Loaded Configuration File:         /etc/php/7.4/cli/php.ini
+```
+
+2.	Encuentra opciones de configuración de OPcache
+use el siguiente comando para localizarlo:
+```
+sudo find / -name 'opcache.ini'
+```
+
+Si tiene más de uno opcache.ini, modifíquelos todos.
+```
+/etc/php/7.4/mods-available/opcache.ini
+/usr/share/php7.4-opcache/opcache/opcache.ini
+```
+
+**Cómo configurar las opciones de PHP**
+
+Para configurar las opciones de PHP:
+1.	Abra un php.ini en un editor de texto.
+2.	Busque la zona horaria de su servidor. Busque la siguiente configuración y descomente si es necesario:
+_date.timezone = America/Mexico_City_
+
+3.	Cambie el valor de _memory_limit_ por uno los valores recomendados
+
+_memory_limit=2G_
+
+4.	Agregue o actualice la configuración realpath_cache para que coincida con los siguientes valores:
+```
+;
+; Increase realpath cache size
+;
+realpath_cache_size = 10M
+;
+; Increase realpath cache ttl
+;
+realpath_cache_ttl = 7200
+```
+
+5.	Guarde sus cambios y salga del editor de texto.
+**configurar las opciones de OPcache**
+
+1.	Abra su archivo de configuración de OPcache en un editor de texto:
+```
+sudo vim /etc/php/7.4/mods-available/opcache.ini
+sudo vim /usr/share/php7.4-opcache/opcache/opcache.ini
+	```
+
+2.	Localice _opcache.save_comments_ y descomente si es necesario. Asegúrese de que su valor esté establecido en 1.
+3.	Guarde sus cambios y salga del editor de texto.
+
+Abra el archivo de configuración de Apache para establecer el nombre de servidor global
+```
+sudo vim /etc/apache2/apache2.conf
+```
+
+Agregue esta línea al final del archivo, luego guarde y salga:
+```
+ServerName localhost
+```
+
+Compruebe si hay errores de sintaxis que podamos haber introducido
+```
+sudo apache2ctl configtest
+```
+
+Reinicie su servidor web
+```
+service apache2 restart
+```
+### 1.4 Elasticsearch
+**Instale el JDK en Ubuntu**
+
+Para instalar JDK 1.8 en Ubuntu, ingrese los siguientes comandos como usuario con privilegios root:
+```
+apt-get -y update
+apt-get install -y openjdk-8-jdk
+```
+
+Descargue e instale la clave de firma pública:
+```
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+```
+
+**Instalación desde el repositorio APT**
+
+Es posible que deba instalar el paquete apt-transport-https en Debian antes de continuar:
+```
+sudo apt-get install apt-transport-https
+```
+
+Guarde la definición del repositorio en _/etc/apt/sources.list.d/elastic-7.x.list_:
+```
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
+```
+
+You can install the Elasticsearch Debian package with:
+```
+sudo apt-get update && sudo apt-get install elasticsearch
+```
+
+**SysV init vs system**
+
+Elasticsearch no se inicia automáticamente después de la instalación. Cómo iniciar y detener Elasticsearch depende de si su sistema usa SysV inito systemd(usado por distribuciones más nuevas). Puede saber cuál se está utilizando, ejecutando este comando:
+```
+ps -p 1
+```
+
+Para configurar Elasticsearch para que se inicie automáticamente cuando se inicia el sistema, ejecute los siguientes comandos:
+```
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+```
+
+Elasticsearch se puede iniciar y detener de la siguiente manera:
+```
+sudo systemctl start elasticsearch
+sudo systemctl stop elasticsearch
+```
+
+Estos comandos no proporcionan información sobre si Elasticsearch se inició correctamente o no. En cambio, esta información se escribirá en los archivos de registro ubicados en _/var/log/elasticsearch/_
+
+Para verificar que Elasticsearch está funcionando, ingrese los siguientes comandos:
+```
+curl -X GET 'http://localhost:9200'
+```
+
+Salida:
+```
+{
+  "name" : "magento",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "Dq12DktKRQa0AArEuJ72Pw",
+  "version" : {
+    "number" : "7.12.1",
+    "build_flavor" : "default",
+    "build_type" : "deb",
+    "build_hash" : "3186837139b9c6b6d23c3200870651f10d3343b7",
+    "build_date" : "2021-04-20T20:56:39.040728659Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.8.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+```
+curl -XGET 'http://localhost:9200/_cat/health?v&pretty'
+```
+
+salida:
+```
+epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+1620873485 02:38:05  elasticsearch green           1         1      0   0    0    0        0             0                  -                100.0%
+```
+
+**Configuración de Elasticsearch**
+
+Comencemos abriendo el archivo de configuración de Elasticsearch usando
+```
+sudo vim /etc/elasticsearch/elasticsearch.yml
+```
+
+Hay 3 cosas que queremos cambiar en este archivo mientras lo tenemos abierto:
+1.	Actualización del nombre del clúster
+
+Busque la línea que contiene cluster.name. Una vez que lo haya localizado, descomente y reemplace _my-application_ con algo descriptivo como _cluster-magento_.
+
+2.	Actualizar el nombre del nodo
+
+Ahora haga lo mismo con node.name, recordando eliminar el " #" anterior y luego reemplazar _nodo-1_ con algo descriptivo como _nodo-magento_.
+
+3.	Actualización del host de red
+
+Finalmente haz lo mismo con _network.host_, reemplazando la IP (“192.168.0.1”) por 10.0.0.25
+
+Descomentar _http.port: 9200_
+
+Ahora guarde sus cambios y salga del editor.
+Recarga tus cambios
+Para que esos 3 cambios surtan efecto, vuelva a cargar el servicio Elasticsearch ejecutando:
+```
+sudo systemctl restart elasticsearch
+```
+
+Ahora ejecutemos una verificación final para asegurarnos de que los cambios surtieron efecto y aplicaron los cambios:
+```
+curl -X GET 'http://localhost:9200'
+```
+
+salida:
+```
+{
+  "name" : "nodo-magento",
+  "cluster_name" : "cluster-magento",
+  "cluster_uuid" : "Dq12DktKRQa0AArEuJ72Pw",
+  "version" : {
+    "number" : "7.12.1",
+    "build_flavor" : "default",
+    "build_type" : "deb",
+    "build_hash" : "3186837139b9c6b6d23c3200870651f10d3343b7",
+    "build_date" : "2021-04-20T20:56:39.040728659Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.8.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+
+### 1.4 Establecer la propiedad y los permisos previos a la instalación
+En esta sección se explica cómo establecer la propiedad y los permisos para su propio servidor o una configuración de alojamiento privado. En este tipo de configuración, normalmente no puede iniciar sesión o cambiar al usuario del servidor web. Por lo general, inicia sesión como un usuario y ejecuta el servidor web como un usuario diferente.
+
+**Sobre el grupo compartido**
+
+Para permitir que el servidor web escriba archivos y directorios en el sistema de archivos de Magento, pero también para mantener la propiedad del propietario del sistema de archivos de Magento, ambos usuarios deben estar en el mismo grupo. Esto es necesario para que ambos usuarios puedan compartir el acceso a los archivos de Magento (incluidos los archivos creados con el administrador de Magento u otras utilidades basadas en la web).
+
+Esta sección explica cómo crear un nuevo propietario del sistema de archivos Magento y poner ese usuario en el grupo del servidor web. Puede utilizar una cuenta de usuario existente si lo desea; recomendamos que el usuario tenga una contraseña segura por razones de seguridad.
+
+1.	cree el propietario del sistema de archivos Magento y proporcione al usuario una contraseña segura. Para crear un usuario ingrese el siguiente comando como usuario con privilegios root:
+```
+sudo adduser magento
+```
+
+Para darle una contraseña al usuario, ingrese el siguiente comando como usuario con privilegios root:
+```
+sudo passwd magento
+```
+Siga las indicaciones en su pantalla para crear una contraseña para el usuario.
+
+2.	Busque el grupo de usuarios del servidor web
+Para encontrar el usuario de apache:
+```
+ps aux | grep apache
+```
+
+luego para buscar el grupo
+```
+groups <apache user>
+```
+Normalmente, el nombre de usuario y el nombre del grupo son ambos www-data.
+
+3.	Coloque al propietario del sistema de archivos de Magento en el grupo del servidor web. Para agregar el usuario _magento_ al grupo _www-data_ principal:
+```
+usermod -a -G www-data magento
+```
+
+Para confirmar que su usuario de Magento es miembro del grupo de servidores web, ingrese el siguiente comando:
+```
+groups magento
+```
+
+El siguiente resultado de muestra muestra los grupos primario (magento) y secundario (www-data) del usuario .
+```
+magento: magento www-data
+```
+
+Para completar la tarea, reinicie el servidor web:
+```
+sudo systemctl restart apache2
+```
+
+4.	Permisos de carpeta
+
+Cuando instalamos Apache, creó automáticamente un directorio web para almacenar archivos web (docroot). Sin embargo, habrá creado esto con el usuario predeterminado conocido como www-data(o incluso root). Entonces, necesitamos actualizar los permisos para ese directorio. Esto permitirá que nuestro nuevo usuario de Magento funcione correctamente.
+
+Actualice la propiedad de la carpeta y el grupo para que coincida con nuestro nuevo usuario web:
+```
+sudo chown -R magento:www-data /var/www/html/
+	```
+
+## 2. Obtén el metapaquete
+
