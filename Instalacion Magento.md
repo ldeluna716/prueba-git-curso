@@ -31,28 +31,36 @@ Elasticsearch
 
 ### 1.1 Instalación y configuración de Apache
 **Versiones de Apache compatibles**
+
 Magento es compatible con Apache 2.4.x.
 
 **Instalación de Apache en Ubuntu**
 Para instalar la versión predeterminada de Apache:
-1.	Instalar Apache
-```apt-get -y install apache2```
-2.	Verifique la instalación.
-```apache2 -v```
+     1.   Instalar Apache
+          ```
+          apt-get -y install apache2
+	  ```
+     2.	  Verifique la instalación.
+          ```
+	  apache2 -v
+	  ```
 
-`	El resultado se muestra similar al siguiente:
-```
-Server version: Apache/2.4.41 (Ubuntu)
-Server built:   2020-08-12T19:46:17
-```
-3.	Habilite las reescrituras y *.htaccess* como se explica en las siguiente seccion.
+          El resultado se muestra similar al siguiente:
+	  ```
+	  Server version: Apache/2.4.41 (Ubuntu)
+	  Server built:   2020-08-12T19:46:17
+	  ```
+     3.   Habilite las reescrituras y *.htaccess* como se explica en las siguiente seccion.
 
 **Habilitar reescrituras y .htaccess para Apache 2.4**
+
 Utilice esta sección para habilitar la reescritura de Apache 2.4 y especificar una configuración para el archivo de configuración distribuido, _.htaccess_
 Magento usa reescrituras de servidor y _.htaccess_ proporciona instrucciones a nivel de directorio para Apache.
 
 1.	Habilite el módulo de reescritura de Apache:
-```a2enmod rewrite```
+```
+a2enmod rewrite
+```
 
 2.	En Apache 2.4, el archivo de configuración del sitio predeterminado del servidor es _/etc/apache2/sites-available/000-default.conf_
 Puede agregar lo siguiente al final de del archivo _000-default.conf_:
@@ -60,11 +68,14 @@ Puede agregar lo siguiente al final de del archivo _000-default.conf_:
 <Directory "/var/www/html">
     AllowOverride All
 </Directory>
-	```
-3.	Reinicie Apache:
-```systemctl restart apache2.service```
+```
+3. 	Reinicie Apache:
+```
+systemctl restart apache2.service
+```
 
 **Solución de errores 403 (prohibidos)**
+
 Si encuentra errores 403 prohibidos al intentar acceder al sitio de Magento, puede actualizar su configuración de Apache o la configuración de su host virtual para permitir que los visitantes accedan al sitio como se explica:
 
 Resolviendo 403 errores prohibidos para Apache 2.4
@@ -79,21 +90,29 @@ Para permitir que los visitantes del sitio web accedan a su sitio, utilice una d
 ```
 ### 1.2 Instalación y configuración de MySQL
 **Instalación de MySQL**
+
 Magento 2.4 requiere una instalación limpia de MySQL 8.0. 
 Para instalar MySQL, ejecute el siguiente comando:
-```sudo apt install mysql-server```
+```
+sudo apt install mysql-server
+```
 
 Cuando finalice la instalación, se recomienda que ejecute un script de seguridad que viene preinstalado con MySQL. 
-```sudo mysql_secure_installation```
+```
+sudo mysql_secure_installation
+```
 Permite ajustar una serie de parámetros básicos de seguridad:
      *  Establecer una contraseña para la cuenta root.
      *  Permitir el acceso solo desde localhost para la cuenta root.
      *  Eliminar el acceso anónimo.
      *  Eliminar la base de datos de test, accesible por todos los usuarios, incluidos los anónimos, y        eliminar los privilegios que permiten a cualquier usuario acceder a las bases de datos con nombres que empiezan por test_.
 Una vez que se completa la instalación, el servidor MySQL debe iniciarse automáticamente. Puede verificar rápidamente su estado actual a través de systemd:
-```sudo systemctl status mysql```
+```
+sudo systemctl status mysql
+```
 
 **Configurar la instancia de la base de datos de Magento**
+
 Esta sección explica cómo crear una nueva instancia de base de datos para Magento.
 
 1.	Acceda a un símbolo del sistema de MySQL.
