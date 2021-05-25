@@ -207,13 +207,11 @@ phpinfo();
 Para ver los resultados, ingrese la siguiente URL en el campo de dirección o ubicación de su navegador:
 ```
 http://<web server host or IP>/phpinfo.php
-	```
-
-	También se puede ubicar la configuración por la línea de comandos de PHP, ingrese:
+```
+También se puede ubicar la configuración por la línea de comandos de PHP, ingrese:
 ```
 php --ini | grep "Loaded Configuration File"
-	```
-
+```
 Mostrará la ruta de php.ini:
 ```
 Loaded Configuration File:         /etc/php/7.4/cli/php.ini
@@ -224,13 +222,11 @@ use el siguiente comando para localizarlo:
 ```
 sudo find / -name 'opcache.ini'
 ```
-
 Si tiene más de uno opcache.ini, modifíquelos todos.
 ```
 /etc/php/7.4/mods-available/opcache.ini
 /usr/share/php7.4-opcache/opcache/opcache.ini
 ```
-
 **Cómo configurar las opciones de PHP**
 
 Para configurar las opciones de PHP:
@@ -261,7 +257,7 @@ realpath_cache_ttl = 7200
 ```
 sudo vim /etc/php/7.4/mods-available/opcache.ini
 sudo vim /usr/share/php7.4-opcache/opcache/opcache.ini
-	```
+```
 
 2.	Localice _opcache.save_comments_ y descomente si es necesario. Asegúrese de que su valor esté establecido en 1.
 3.	Guarde sus cambios y salga del editor de texto.
