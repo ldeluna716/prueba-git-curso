@@ -15,19 +15,28 @@ sudo apt-get upgrade
 ```
 
 **Verificación de requisitos previos**
+
 Para verificar los requisitos previos de su sistema, ingrese los siguientes comandos:
 
 APACHE
-```apache2 -v```
+```
+apache2 -v
+```
 
 PHP
-```php -v```
+```
+php -v
+```
 
 MySQL
-```mysql -V```
+```
+mysql -V
+```
 
 Elasticsearch
-```curl -XGET 'localhost:9200```
+```
+curl -XGET 'localhost:9200
+```
 
 ### 1.1 Instalación y configuración de Apache
 **Versiones de Apache compatibles**
@@ -35,11 +44,14 @@ Elasticsearch
 Magento es compatible con Apache 2.4.x.
 
 **Instalación de Apache en Ubuntu**
+
 Para instalar la versión predeterminada de Apache:
+
      1.   Instalar Apache
           ```
           apt-get -y install apache2
 	  ```
+
      2.	  Verifique la instalación.
           ```
 	  apache2 -v
@@ -50,6 +62,7 @@ Para instalar la versión predeterminada de Apache:
 	  Server version: Apache/2.4.41 (Ubuntu)
 	  Server built:   2020-08-12T19:46:17
 	  ```
+
      3.   Habilite las reescrituras y *.htaccess* como se explica en las siguiente seccion.
 
 **Habilitar reescrituras y .htaccess para Apache 2.4**
@@ -78,7 +91,6 @@ systemctl restart apache2.service
 
 Si encuentra errores 403 prohibidos al intentar acceder al sitio de Magento, puede actualizar su configuración de Apache o la configuración de su host virtual para permitir que los visitantes accedan al sitio como se explica:
 
-Resolviendo 403 errores prohibidos para Apache 2.4
 Para permitir que los visitantes del sitio web accedan a su sitio, utilice una de las directivas Requeridas.
 ```
 <Directory "/var/www/">
@@ -88,6 +100,7 @@ Para permitir que los visitantes del sitio web accedan a su sitio, utilice una d
   Require all granted
 </Directory>
 ```
+
 ### 1.2 Instalación y configuración de MySQL
 **Instalación de MySQL**
 
@@ -102,10 +115,12 @@ Cuando finalice la instalación, se recomienda que ejecute un script de segurida
 sudo mysql_secure_installation
 ```
 Permite ajustar una serie de parámetros básicos de seguridad:
+
      *  Establecer una contraseña para la cuenta root.
      *  Permitir el acceso solo desde localhost para la cuenta root.
      *  Eliminar el acceso anónimo.
-     *  Eliminar la base de datos de test, accesible por todos los usuarios, incluidos los anónimos, y        eliminar los privilegios que permiten a cualquier usuario acceder a las bases de datos con nombres que empiezan por test_.
+     *  Eliminar la base de datos de test, accesible por todos los usuarios, incluidos los anónimos, y eliminar los privilegios que permiten a cualquier usuario acceder a las bases de datos con nombres que empiezan por test_.
+
 Una vez que se completa la instalación, el servidor MySQL debe iniciarse automáticamente. Puede verificar rápidamente su estado actual a través de systemd:
 ```
 sudo systemctl status mysql
@@ -116,20 +131,25 @@ sudo systemctl status mysql
 Esta sección explica cómo crear una nueva instancia de base de datos para Magento.
 
 1.	Acceda a un símbolo del sistema de MySQL.
+```
 sudo mysql -u root -p
+```
 
 2.	Ingrese la contraseña root del usuario de MySQL cuando se le solicite.
 3.	Ingrese los siguientes comandos en el orden que se muestra para crear una instancia de base de datos nombrada magento con nombre de usuario magento:
+```
 create database magento;
 create user 'magento'@'localhost' IDENTIFIED BY 'Acceso2021!';
 GRANT ALL ON magento.* TO 'magento'@'localhost';
 flush privileges;
+```
 
-4.	Ingrese exit para salir del símbolo del sistema.
+4.	Ingrese ```exit``` para salir del símbolo del sistema.
 
 5.	Verifique la base de datos:
-
+```
 mysql -u magento -p
+```
 
 Si aparece el monitor MySQL, ha creado la base de datos correctamente. Si aparece un error, repita los comandos anteriores.
 
