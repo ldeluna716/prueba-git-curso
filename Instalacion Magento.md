@@ -47,23 +47,23 @@ Magento es compatible con Apache 2.4.x.
 
 Para instalar la versión predeterminada de Apache:
 
-     1.   Instalar Apache
-          ```
-          apt-get -y install apache2
-	  ```
+1.   Instalar Apache
+```
+apt-get -y install apache2
+```
 
-     2.	  Verifique la instalación.
-          ```
-	  apache2 -v
-	  ```
+2. Verifique la instalación.
+```
+apache2 -v
+```
 
-          El resultado se muestra similar al siguiente:
-	  ```
-	  Server version: Apache/2.4.41 (Ubuntu)
-	  Server built:   2020-08-12T19:46:17
-	  ```
+El resultado se muestra similar al siguiente:
+```
+Server version: Apache/2.4.41 (Ubuntu)
+Server built:   2020-08-12T19:46:17
+```
 
-     3.   Habilite las reescrituras y *.htaccess* como se explica en las siguiente seccion.
+3.   Habilite las reescrituras y *.htaccess* como se explica en las siguiente seccion.
 
 **Habilitar reescrituras y .htaccess para Apache 2.4**
 
@@ -114,7 +114,7 @@ Cuando finalice la instalación, se recomienda que ejecute un script de segurida
 ```
 sudo mysql_secure_installation
 ```
-Permite ajustar una serie de parámetros básicos de seguridad:
+Este script permite ajustar una serie de parámetros básicos de seguridad:
 
      *  Establecer una contraseña para la cuenta root.
      *  Permitir el acceso solo desde localhost para la cuenta root.
@@ -136,7 +136,7 @@ sudo mysql -u root -p
 ```
 
 2.	Ingrese la contraseña root del usuario de MySQL cuando se le solicite.
-3.	Ingrese los siguientes comandos en el orden que se muestra para crear una instancia de base de datos nombrada magento con nombre de usuario magento:
+3.	Ingrese los siguientes comandos en el orden que se muestra para crear una instancia de base de datos nombrada _magento_ con nombre de usuario _magento_:
 ```
 create database magento;
 create user 'magento'@'localhost' IDENTIFIED BY 'Acceso2021!';
