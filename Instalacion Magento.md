@@ -2,8 +2,6 @@
 Guía de cómo instalar, configurar y acceder al Magento CMS en una computadora que ejecuta Ubuntu Linux.
 - Ubuntu 20.04.2, 2 CPU, 4GB RAM, 16GB HDD
 - Magento Versión 2.4.0
-
-Flujo de instalación
  
 ## 1. Prerrequisitos
 Le recomendamos encarecidamente que actualice y actualice el software de su sistema operativo. Estas actualizaciones pueden proporcionar correcciones de seguridad y software que pueden evitar problemas futuros.
@@ -153,7 +151,7 @@ mysql -u magento -p
 
 Si aparece el monitor MySQL, ha creado la base de datos correctamente. Si aparece un error, repita los comandos anteriores.
 
-### 1.3 PHP
+### 1.3 Instalacion y configuración de PHP
 
 1.	Instale PHP 7.4 junto con los módulos necesarios
 ```
@@ -229,7 +227,6 @@ Si tiene más de uno opcache.ini, modifíquelos todos.
 ```
 **Cómo configurar las opciones de PHP**
 
-Para configurar las opciones de PHP:
 1.	Abra un php.ini en un editor de texto.
 2.	Busque la zona horaria de su servidor. Busque la siguiente configuración y descomente si es necesario:
 
@@ -283,7 +280,7 @@ Reinicie su servidor web
 ```
 service apache2 restart
 ```
-### 1.4 Elasticsearch
+### 1.4 Instalación y configuración de Elasticsearch
 **Instale el JDK en Ubuntu**
 
 Para instalar JDK 1.8 en Ubuntu, ingrese los siguientes comandos como usuario con privilegios root:
@@ -316,7 +313,9 @@ sudo apt-get update && sudo apt-get install elasticsearch
 
 **SysV init vs system**
 
-Elasticsearch no se inicia automáticamente después de la instalación. Cómo iniciar y detener Elasticsearch depende de si su sistema usa SysV inito systemd(usado por distribuciones más nuevas). Puede saber cuál se está utilizando, ejecutando este comando:
+Elasticsearch no se inicia automáticamente después de la instalación.
+Cómo iniciar y detener Elasticsearch depende de si su sistema usa SysV init o systemd(usado por distribuciones más nuevas).
+Puede saber cuál se está utilizando, ejecutando este comando:
 ```
 ps -p 1
 ```
@@ -486,7 +485,7 @@ Actualice la propiedad de la carpeta y el grupo para que coincida con nuestro nu
 sudo chown -R magento:www-data /var/www/html/
 ```
 
-## 2. Obtén el metapaquete
+## 2. Obtener el metapaquete
 Usamos Composer para administrar los componentes de Magento y sus dependencias
 Descargar e instalar composer:
 EL comando descargarán Composer de su página de mantenimiento y lo instalarán en el directorio _/usr/local/bin_ , este es un directorio global local para ejecutables de aplicaciones.
